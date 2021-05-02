@@ -1,0 +1,45 @@
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.add-margin {
+    margin-top: 2em;
+}
+
+.gradient {
+    background: rgb(255,255,255) !important;
+    background: linear-gradient(90deg, rgba(255,255,255,1) 65%, rgb(255, 242, 64) 100%) !important;
+}
+
+.age {
+    font-weight: 400;
+}
+
+.profile-pic {
+    margin-right: 2em;
+}
+
+.company-logo {
+    margin-right: 14px;
+}
+
+.text-segment {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+.experience-list {
+    margin-top: 3em;
+}
+
+.job-item {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1em;
+}
+
+.divide {
+    margin-top: 1em;
+}
