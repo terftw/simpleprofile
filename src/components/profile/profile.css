@@ -3,17 +3,8 @@
     flex-direction: row;
 }
 
-.add-margin {
+.first-segment {
     margin-top: 2em;
-}
-
-.gradient {
-    background: rgb(255,255,255) !important;
-    background: linear-gradient(90deg, rgba(255,255,255,1) 65%, rgb(255, 242, 64) 100%) !important;
-}
-
-.age {
-    font-weight: 400;
 }
 
 .profile-pic {
@@ -21,7 +12,7 @@
 }
 
 .company-logo {
-    margin-right: 14px;
+    margin-right: 12px;
 }
 
 .text-segment {
@@ -30,16 +21,54 @@
     flex-direction: column;
 }
 
+.experience-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.experience-title {
+    margin-top: 2rem;
+    align-self: center;
+}
+
 .experience-list {
-    margin-top: 3em;
+    margin-top: 2em;
 }
 
 .job-item {
-    display: flex;
-    flex-direction: row;
+    display:flex;
     margin-bottom: 1em;
+}
+
+.job-title {
+    margin-bottom: 4px;
+}
+
+.job-description {
+    margin-top: 8px;
+}
+
+.plus-logo, .basic-logo {
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.basic-logo {
+    margin: auto 0 auto auto;
+}
+
+.plus-logo:hover, .basic-logo:hover {
+    background-color: rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.add-icon  {
+    margin: auto !important;
+    color: #000;
 }
 
 .divide {
     margin-top: 1em;
 }
+

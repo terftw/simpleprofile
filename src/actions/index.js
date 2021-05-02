@@ -1,8 +1,10 @@
-import { doc, getDoc } from "firebase/firestore"; 
+import { doc, getDoc, writeBatch } from "firebase/firestore"; 
 import { db } from '../firebase/FireBase';
+import _ from 'lodash';
+
+const docRef = doc(db, "user", "glintsdemo");
 
 export const fetchProfile = () => async dispatch => {
-    const docRef = doc(db, "user", "glintsdemo");
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -10,4 +12,14 @@ export const fetchProfile = () => async dispatch => {
     }else {
         console.log('gg');
     }
+}
+
+export const editBasic = (data, history) => async dispatch => {
+    const batch = writeBatch(db);
+
+    batch.update(docRef, { ...data });
+    await batch.commit();
+
+    dispatch({ type: 'EDIT_PROFILE', payload: data});
+    history.push('/');
 }

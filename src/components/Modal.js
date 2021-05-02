@@ -4,8 +4,8 @@ import { createPortal } from 'react-dom';
 const Modal = props => {
     return createPortal(
         <div className="ui dimmer modals visible active">
-            <div className="ui standard modal visible active">
-                asdasdasdas
+            <div className="ui small modal visible active">
+                {props.itemsToRender()}
             </div>
         </div>,
         document.querySelector('#modal')

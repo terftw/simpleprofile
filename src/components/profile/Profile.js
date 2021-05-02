@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { fetchProfile } from '../../actions';
 import './profile.css';
@@ -21,10 +22,10 @@ class Profile extends Component {
                             <img className="" src={item.companyLogo} height="40" width="40" />
                         </div>
                         <div>
-                            <h3>{item.jobTitle}</h3>
+                            <h3 className="job-title">{item.jobTitle}</h3>
                             <h4>{item.company}</h4>
                             <h5>{`${item.startMonth} ${item.startYear} - ${endMonthString}`}</h5>
-                            <p>{item.jobDescription}</p>
+                            <p className="job-description">{item.jobDescription}</p>
                         </div>
                     </div>
                     {arr.length - 1 === index ? null : <div className="ui divider divide"></div>}
@@ -39,7 +40,7 @@ class Profile extends Component {
 
         return (
             <div>
-                <div className="ui fixed inverted menu">
+                <div className="ui pointing menu">
                     <div className="ui container">
                         <a href="#" className="header item">Test 1</a>
                         <a href="#" className="item">Test 2</a>
@@ -47,18 +48,24 @@ class Profile extends Component {
                     </div>
                 </div>
                 <div className="ui main text container add-margin">
-                    <h1 className="ui header"></h1>
-                    <div className="ui segment gradient">
+                    <div className="first-segment ui segment">
                         <div className="flex-row">
                             <img className="ui tiny circular image profile-pic " src={profile.profileImage} />
                             <div className="text-segment">
-                                <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
-                                <h2 className="age">{profile.age}</h2>
+                                <h1>{`${profile.firstName} ${profile.lastName}, ${profile.age}`}</h1>
                             </div>
+                            < Link to="/basic_edit" className="basic-logo">
+                                <i className="edit icon add-icon"></i>
+                            </Link>
                         </div>    
                     </div>
                     <div className="ui segment">
-                        <h2 className="add-margin">Work Experience</h2>
+                        <header className="experience-container">
+                            <h2 className="experience-title">Work Experience</h2>
+                            <a href="#" className="plus-logo">
+                                <i className="plus icon add-icon" />
+                            </a>
+                        </header>  
                         <div className="experience-list">
                             {this.renderList()}
                         </div>

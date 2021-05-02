@@ -1,0 +1,24 @@
+.testclass{
+    margin: 5% 15%;
+    width: 70%;
+}
+
+.basic-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.closed {
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.closed:hover {
+    background-color: rgba(0,0,0,0.08);
+    transition: 0.3s;padding: 4px;
+}
+
+.close-icon {
+    margin: auto !important;
+    color: #000;
+}

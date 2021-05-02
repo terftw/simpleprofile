@@ -1,17 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import Form from './form/Form';
+import BasicForm from './form/BasicForm';
 import Profile from './profile/Profile';
-import Modal from './Modal';
 
 const App = () => {
     return (
         <div>
           <BrowserRouter>
             <div>
-              <Route path="/" exact component={Profile} />
-              <Route path="/edit" component={Modal} />
+              <Route path="/" component={Profile} />
+              <Route path="/basic_edit" component={BasicForm} />
             </div>
           </BrowserRouter>
         </div>

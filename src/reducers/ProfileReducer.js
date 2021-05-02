@@ -3,7 +3,7 @@ export default (state = [], action) => {
         case 'FETCH_PROFILE':
             return action.payload
         case 'EDIT_PROFILE':
-            return [...state, action.payload];
+            return {...state, ...action.payload};
         default:
             return state;
     }
