@@ -4,6 +4,9 @@ export default (state = [], action) => {
             return action.payload
         case 'EDIT_PROFILE':
             return {...state, ...action.payload};
+        case 'EDIT_PROFILE_PIC':
+            console.log('hello')
+            return {...state, ...action.payload};
         default:
             return state;
     }

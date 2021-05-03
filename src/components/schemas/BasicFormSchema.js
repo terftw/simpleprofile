@@ -1,6 +1,22 @@
-const required = value => (value ? undefined : 'Required')
-const mustBeNumber = value => (isNaN(value) ? 'Must be a number' : undefined)
-const minValue = min => value =>
-  isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`
-const composeValidators = (...validators) => value =>
-  validators.reduce((error, validator) => error || validator(value), undefined)
+const validation = values => {
+    const errors = {}
+        if (!values.firstName) {
+            errors.firstName = 'Required';
+        }
+        if (!values.lastName) {
+            errors.lastName = 'Required';
+        }
+        if (!values.age) {
+            errors.age = 'Required'
+        } else if (values.age < 18) {
+            errors.age = 'Must be at least 18';
+        } else if (isNaN(values.age)) {
+            errors.age = 'Must be a number';
+        }
+
+    return errors
+}
+
+export {
+  validation
+}

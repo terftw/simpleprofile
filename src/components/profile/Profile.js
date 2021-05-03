@@ -10,8 +10,6 @@ class Profile extends Component {
         this.props.fetchProfile();
     }
     renderList = () => {
-        console.log(this.props);
-
         return this.props.profile.length != 0 && this.props.profile.workExperience.map((item, index, arr) => {
             const endMonthString = item.isCurrentJob ? "Present" :`${item.endMonth} ${item.endYear}`;
 
@@ -30,8 +28,6 @@ class Profile extends Component {
                     </div>
                     {arr.length - 1 === index ? null : <div className="ui divider divide"></div>}
                 </div>
-                
-
             )
         })
     }
@@ -54,7 +50,7 @@ class Profile extends Component {
                             <div className="text-segment">
                                 <h1>{`${profile.firstName} ${profile.lastName}, ${profile.age}`}</h1>
                             </div>
-                            < Link to="/basic_edit" className="basic-logo">
+                            <Link to="/basic_edit" className="basic-logo">
                                 <i className="edit icon add-icon"></i>
                             </Link>
                         </div>    
@@ -62,9 +58,9 @@ class Profile extends Component {
                     <div className="ui segment">
                         <header className="experience-container">
                             <h2 className="experience-title">Work Experience</h2>
-                            <a href="#" className="plus-logo">
+                            <Link to="/experience_add" className="plus-logo">
                                 <i className="plus icon add-icon" />
-                            </a>
+                            </Link>
                         </header>  
                         <div className="experience-list">
                             {this.renderList()}

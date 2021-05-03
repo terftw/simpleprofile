@@ -1,0 +1,52 @@
+.dropzone-container {
+    margin:auto;
+}
+
+.dropzone {
+    cursor: pointer;
+    padding: 48px;
+    border: 1px dashed rgba(0, 0, 0, .5);
+    display: flex;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.image-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 32px !important;
+}
+
+
+.profile-image {
+    margin-bottom: 8px;
+    width: 144px !important;
+    height: 144px !important;
+}
+
+.button-container {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.upload-error {
+    display: inline-block;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    color: #e74c3c;
+}
+
+.image-preview {
+    display: block;
+    margin: 0 0 .28571429rem 0;
+    color: rgba(0,0,0,.87);
+    font-size: .92857143em;
+    font-weight: 700;
+    text-transform: none;
+    text-align: center;
+}

@@ -6,6 +6,7 @@
 .basic-header {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 0 !important;
 }
 
 .closed {
@@ -21,4 +22,21 @@
 .close-icon {
     margin: auto !important;
     color: #000;
+}
+
+.form-error {
+    display: inline-block;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    color: #e74c3c;
+}
+
+.form-input {
+    margin-bottom: 4px !important;
+}
+
+.edit-icon {
+    font-size: 18px !important;
+    margin: auto !important;
 }

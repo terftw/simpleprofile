@@ -4,18 +4,23 @@ import { Form, Field } from 'react-final-form'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Dropzone from './Dropzone';
 import Modal from '../Modal';
-import { editBasic } from '../../actions';
+import { editBasic, editProfilePic } from '../../actions';
+import { validation } from '../schemas/BasicFormSchema';
+
 import './basicForm.css';
 
 class BasicForm extends Component {
     state = {
-        isSubmitting: false
+        isSubmitting: false,
+        imageFail: false
     }
 
     renderModalContents = () => {
         const onSubmit = async values => {
-            if (!_.isEqual(this.props.profile, values)) {
+            if (!_.isEqual(this.props.profile, values) && !this.state.imageFail) {
+                console.log('updating')
                 this.setState({ isSubmitting: true });
                 this.props.editBasic(values, this.props.history);
             } else {
@@ -23,10 +28,17 @@ class BasicForm extends Component {
             }
         }
         const buttonLoad = this.state.isSubmitting ? "loading" : "";
+        const imageOk = () => {
+            this.setState({ imageFail: false});
+        }
+        const imageNotOk = () => {
+            this.setState({ imageFail: true });
+        }
+
         return (
             <div>
                 <header className="ui segment basic-header">
-                    <h2>Edit basic information</h2>
+                    <h2>Edit Basic Information</h2>
                     <Link className="closed" to="/">
                         <i className="close icon close-icon" />
                     </Link>
@@ -34,22 +46,35 @@ class BasicForm extends Component {
                 <Form
                     onSubmit={onSubmit}
                     initialValues={this.props.profile}
-                    render={({ handleSubmit, values }) => (
+                    validate={validation}
+                    render={({ handleSubmit, submitting }) => (
                         <form className="ui form testclass" onSubmit={handleSubmit}>
+                            <Dropzone 
+                                image={this.props.profile.profileImage} 
+                                onSubmit={this.props.editProfilePic}
+                                imageOk={imageOk}
+                                imageNotOk={imageNotOk}
+                            />
                             <div className="field">
                                 <label>Name</label>
                                 <div className="two fields">
                                     <div className="field">
                                         <Field name="firstName">
-                                            {({ input }) => (
-                                                <input type="text" placeholder="First Name" {...input} />
+                                            {({ input, meta }) => (
+                                                <div>
+                                                    <input { ...input } type="text" placeholder="First Name" className="form-input" />
+                                                    <span className="form-error">{ meta.error }</span>
+                                                </div>
                                             )}
                                         </Field>
                                     </div>
                                     <div className="field">
                                         <Field name="lastName">
-                                                {({ input }) => (
-                                                    <input type="text" placeholder="Last Name" {...input} />
+                                                {({ input, meta }) => (
+                                                    <div>
+                                                        <input { ...input } type="text" placeholder="Last Name" className="form-input" />
+                                                        <span className="form-error">{ meta.error }</span>
+                                                    </div>
                                                 )}
                                         </Field>
                                     </div>
@@ -58,12 +83,21 @@ class BasicForm extends Component {
                             <div className="field">
                                 <label>Age</label>
                                 <Field name="age">
-                                    {({ input }) => (
-                                        <input type="text" placeholder="Age" {...input} />
+                                    {({ input, meta }) => (
+                                        <div>
+                                            <input { ...input } type="text" placeholder="Age" className="form-input" />
+                                            <span className="form-error">{ meta.error }</span>
+                                        </div>
                                     )}
                                 </Field>
                             </div>
-                            <button className={`ui primary button ${buttonLoad}`} type="submit">Submit</button>
+                            <button 
+                                className={`ui green button ${buttonLoad}`} 
+                                type="submit"
+                                disabled={submitting}
+                            >
+                                Submit
+                            </button>
                         </form>
                     )}
                 />
@@ -82,4 +116,4 @@ const mapStateToProps = state => {
     return { profile: state.profile };
 }
 
-export default connect(mapStateToProps, { editBasic })(BasicForm);
+export default connect(mapStateToProps, { editBasic, editProfilePic })(BasicForm);
