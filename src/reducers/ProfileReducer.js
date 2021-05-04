@@ -1,13 +1,14 @@
-export default (state = [], action) => {
+const ProfileReducer = (state = [], action) => {
     switch(action.type) {
         case 'FETCH_PROFILE':
             return action.payload
         case 'EDIT_PROFILE':
-            return {...state, ...action.payload};
         case 'EDIT_PROFILE_PIC':
-            console.log('hello')
+        case 'ADD_WORK_EXP':
             return {...state, ...action.payload};
         default:
             return state;
     }
 }
+
+export default ProfileReducer;

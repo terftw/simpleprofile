@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Dropzone from './Dropzone';
 import Modal from '../Modal';
 import { editBasic, editProfilePic } from '../../actions';
-import { validation } from '../schemas/BasicFormSchema';
+import { basicValidation } from '../schemas/FormSchemas';
 
 import './basicForm.css';
 
@@ -46,7 +46,7 @@ class BasicForm extends Component {
                 <Form
                     onSubmit={onSubmit}
                     initialValues={this.props.profile}
-                    validate={validation}
+                    validate={basicValidation}
                     render={({ handleSubmit, submitting }) => (
                         <form className="ui form testclass" onSubmit={handleSubmit}>
                             <Dropzone 
@@ -63,7 +63,7 @@ class BasicForm extends Component {
                                             {({ input, meta }) => (
                                                 <div>
                                                     <input { ...input } type="text" placeholder="First Name" className="form-input" />
-                                                    <span className="form-error">{ meta.error }</span>
+                                                    <span className="form-error">{ meta.touched && meta.error }</span>
                                                 </div>
                                             )}
                                         </Field>
@@ -73,7 +73,7 @@ class BasicForm extends Component {
                                                 {({ input, meta }) => (
                                                     <div>
                                                         <input { ...input } type="text" placeholder="Last Name" className="form-input" />
-                                                        <span className="form-error">{ meta.error }</span>
+                                                        <span className="form-error">{ meta.touched && meta.error }</span>
                                                     </div>
                                                 )}
                                         </Field>
@@ -86,7 +86,7 @@ class BasicForm extends Component {
                                     {({ input, meta }) => (
                                         <div>
                                             <input { ...input } type="text" placeholder="Age" className="form-input" />
-                                            <span className="form-error">{ meta.error }</span>
+                                            <span className="form-error">{ meta.touched && meta.error }</span>
                                         </div>
                                     )}
                                 </Field>

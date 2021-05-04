@@ -38,9 +38,15 @@ const Dropzone = (props) => {
         setFiles(newFiles);
     };
 
-    const uploadPicture = () => {
-        props.onSubmit(files[0], props.image);
+    const uploadPicture = event => {
+        if (props.onSubmit) {
+            props.onSubmit(files[0], props.image);
+        } else if (props.onLogoUpload) {
+            props.onLogoUpload(files[0]);
+        }
+
         removeFile(files[0])
+        event.preventDefault();
     }
 
     const fileRejectionsItems = fileRejections.map(( { file } ) => (
@@ -64,6 +70,7 @@ const Dropzone = (props) => {
                     <img 
                         className="circular ui image profile-image" 
                         src={files.length ? files[0].preview : "https://firebasestorage.googleapis.com/v0/b/glints-demo.appspot.com/o/images%2Fplaceholder.png?alt=media&token=5131e7e2-7a74-492e-8389-e63ffc0234d6"}
+                        alt="preview"
                     />
                     <label className="image-preview">Image Preview</label>
                 </div>
@@ -77,12 +84,12 @@ const Dropzone = (props) => {
                         
                     </div>
                     <div className="button-container">
-                        <a
+                        <button
                             className="ui button green"
                             onClick={uploadPicture}
                         >
                             Submit
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>

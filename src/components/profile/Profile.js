@@ -10,14 +10,14 @@ class Profile extends Component {
         this.props.fetchProfile();
     }
     renderList = () => {
-        return this.props.profile.length != 0 && this.props.profile.workExperience.map((item, index, arr) => {
+        return this.props.profile.length !== 0 && this.props.profile.workExperience.map((item, index, arr) => {
             const endMonthString = item.isCurrentJob ? "Present" :`${item.endMonth} ${item.endYear}`;
 
             return (
                 <div key={index}>
                     <div className="job-item">
                         <div className="company-logo">
-                            <img className="" src={item.companyLogo} height="40" width="40" />
+                            <img className="" src={item.companyLogo} height="40" width="40" alt="company logo"/>
                         </div>
                         <div>
                             <h3 className="job-title">{item.jobTitle}</h3>
@@ -46,7 +46,7 @@ class Profile extends Component {
                 <div className="ui main text container add-margin">
                     <div className="first-segment ui segment">
                         <div className="flex-row">
-                            <img className="ui tiny circular image profile-pic " src={profile.profileImage} />
+                            <img className="ui tiny circular image profile-pic " src={profile.profileImage} alt="profile" />
                             <div className="text-segment">
                                 <h1>{`${profile.firstName} ${profile.lastName}, ${profile.age}`}</h1>
                             </div>

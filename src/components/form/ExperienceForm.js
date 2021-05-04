@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Modal from '../Modal';
-import Dropzone from './Dropzone';
-import { editBasic, editProfilePic } from '../../actions';
+import { editWorkExp, addWorkExpPic } from '../../actions';
 import Options from './options/Options';
 import { monthOptions, yearOptions } from './datetime/DateTime';
-import { validation } from '../schemas/BasicFormSchema';
+import { expValidation } from '../schemas/FormSchemas';
+import Dropzone from './Dropzone';
 
 import './basicForm.css';
 
@@ -21,13 +21,28 @@ class ExperienceForm extends Component {
 
     renderModalContents = () => {
         const onSubmit = async values => {
-            if (!_.isEqual(this.props.profile, values) && !this.state.imageFail) {
-                console.log('updating')
-                this.setState({ isSubmitting: true });
-                this.props.editBasic(values, this.props.history);
-            } else {
-                this.props.history.push("/");
+            const tempArr = this.props.workExperience;
+            let finalVals = values;
+            if (this.props.logo !== "") {
+                finalVals = { ...values, companyLogo: this.props.logo};
             }
+
+            tempArr.push(finalVals)
+            this.props.editWorkExp({ workExperience: tempArr }, this.props.history);
+
+            // if (!_.isEqual(this.props.profile, values)) {
+            //     this.setState({ isSubmitting: true });
+                /*
+                    remember to remove equals check
+                    const tempArr = this.props.workExperience
+                    condition check: if props.logo not empty, add to values
+                    tempArr.push(values)
+                    tempArr.sort by time
+                    {workExperience: tempArr}
+                */
+            // } else {
+            //     this.props.history.push("/");
+            // }
         }
         const buttonLoad = this.state.isSubmitting ? "loading" : "";
         const imageOk = () => {
@@ -47,16 +62,23 @@ class ExperienceForm extends Component {
                 </header>
                 <Form
                     onSubmit={onSubmit}
-                    validate={validation}
+                    validate={expValidation}
                     render={({ handleSubmit, submitting, values }) => (
                         <form className="ui form testclass" onSubmit={handleSubmit}>
+                            {console.log(this.props.logo)}
+                            <Dropzone
+                                image={this.props.logo}
+                                onLogoUpload={this.props.addWorkExpPic}
+                                imageOk={imageOk}
+                                imageNotOk={imageNotOk}
+                            />
                             <div className="field">
                                 <label>Company</label>
                                 <Field name="company">
                                     {({ input, meta }) => (
                                         <div>
                                             <input { ...input } type="text" placeholder="Company" className="form-input" />
-                                            <span className="form-error">{ meta.error }</span>
+                                            <span className="form-error">{ meta.error && meta.touched && meta.error }</span>
                                         </div>
                                     )}
                                 </Field>
@@ -67,7 +89,7 @@ class ExperienceForm extends Component {
                                     {({ input, meta }) => (
                                         <div>
                                             <input { ...input } type="text" placeholder="Job Title" className="form-input" />
-                                            <span className="form-error">{ meta.error }</span>
+                                            <span className="form-error">{ meta.error && meta.touched && meta.error }</span>
                                         </div>
                                     )}
                                 </Field>
@@ -85,7 +107,8 @@ class ExperienceForm extends Component {
                                                             name={input.name}
                                                             onChange={(value) => input.onChange(value)}
                                                         />
-                                                        <span className="form-error">{ meta.error }</span>
+                                                        {console.log(meta)}
+                                                        <span className="form-error">{ meta.modified && meta.error }</span>
                                                     </div>   
                                                 )
                                             }}
@@ -102,7 +125,7 @@ class ExperienceForm extends Component {
                                                             isYear
                                                             onChange={(value) => input.onChange(value)}
                                                         />
-                                                        <span className="form-error">{ meta.error }</span>
+                                                        <span className="form-error">{ meta.modified && meta.error }</span>
                                                     </div>   
                                                 )
                                             }}
@@ -123,7 +146,7 @@ class ExperienceForm extends Component {
                                                             name={input.name}
                                                             onChange={(value) => input.onChange(value)}
                                                         />
-                                                        <span className="form-error">{ meta.error }</span>
+                                                        <span className="form-error">{ meta.modified && meta.error }</span>
                                                     </div>   
                                                 )
                                             }}
@@ -140,7 +163,7 @@ class ExperienceForm extends Component {
                                                             isYear
                                                             onChange={(value) => input.onChange(value)}
                                                         />
-                                                        <span className="form-error">{ meta.error }</span>
+                                                        <span className="form-error">{ meta.modified && meta.error }</span>
                                                     </div>   
                                                 )
                                             }}
@@ -154,7 +177,7 @@ class ExperienceForm extends Component {
                                     {({ input, meta }) => (
                                         <div>
                                             <textarea { ...input } placeholder="Tell us more about your job experiences" className="form-input" />
-                                            <span className="form-error">{ meta.error }</span>
+                                            <span className="form-error">{ meta.error && meta.touched && meta.error }</span>
                                         </div>
                                     )}
                                 </Field>
@@ -181,7 +204,10 @@ class ExperienceForm extends Component {
 };
 
 const mapStateToProps = state => {
-    return { profile: state.profile };
+    return { 
+        logo: state.logo,
+        workExperience: state.profile.workExperience
+     };
 }
 
-export default connect(mapStateToProps, { editBasic, editProfilePic })(ExperienceForm);
+export default connect(mapStateToProps, { editWorkExp, addWorkExpPic })(ExperienceForm);
