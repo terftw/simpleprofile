@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import LoadingSpinner from '../spinner/LoadingSpinner';
 import { fetchProfile } from '../../actions';
 import './profile.css';
 
@@ -15,25 +16,32 @@ class Profile extends Component {
 
             return (
                 <div key={index}>
-                    <div className="job-item">
-                        <div className="company-logo">
-                            <img className="" src={item.companyLogo} height="40" width="40" alt="company logo"/>
+                    <div className="job-item-segment">
+                        <div className="job-item">
+                            <div className="company-logo">
+                                <img className="" src={item.companyLogo} height="40" width="40" alt="company logo"/>
+                            </div>
+                            <div>
+                                <h3 className="job-title">{item.jobTitle}</h3>
+                                <h4>{item.company}</h4>
+                                <h5>{`${item.startMonth} ${item.startYear} - ${endMonthString}`}</h5>
+                                <p className="job-description">{item.jobDescription}</p>
+                            </div>
                         </div>
-                        <div>
-                            <h3 className="job-title">{item.jobTitle}</h3>
-                            <h4>{item.company}</h4>
-                            <h5>{`${item.startMonth} ${item.startYear} - ${endMonthString}`}</h5>
-                            <p className="job-description">{item.jobDescription}</p>
-                        </div>
+                        <Link to={`/experience_edit/${index}`} className="edit-button-container">
+                            <i className="edit icon add-icon"></i>
+                        </Link>
+                        
                     </div>
                     {arr.length - 1 === index ? null : <div className="ui divider divide"></div>}
                 </div>
+                
             )
         })
     }
-    render() {
+    renderMain() {
         const { profile } = this.props;
-
+        console.log(this.props);
         return (
             <div>
                 <div className="ui pointing menu">
@@ -67,8 +75,14 @@ class Profile extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
-            
+            </div> 
+        )
+    }
+    render() {
+        return (
+            <div>
+                {this.props.profile.length === 0 ? <LoadingSpinner /> : this.renderMain()}
+            </div>            
         )
     }
 }

@@ -36,9 +36,13 @@
     margin-top: 2em;
 }
 
+.job-item-segment {
+    display: flex;
+    flex-direction: row;
+}
+
 .job-item {
     display:flex;
-    margin-bottom: 1em;
 }
 
 .job-title {
@@ -58,7 +62,7 @@
     margin: auto 0 auto auto;
 }
 
-.plus-logo:hover, .basic-logo:hover {
+.plus-logo:hover, .basic-logo:hover, .edit-button-container:hover {
     background-color: rgba(0,0,0,0.08);
     transition: 0.3s;
 }
@@ -72,3 +76,8 @@
     margin-top: 1em;
 }
 
+.edit-button-container {
+    margin-left: auto;
+    padding: 8px;
+    border-radius: 50%;
+}

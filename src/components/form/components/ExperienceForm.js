@@ -1,57 +1,29 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { Form, Field } from 'react-final-form'
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 
-import Modal from '../Modal';
-import { editWorkExp, addWorkExpPic } from '../../actions';
-import Options from './options/Options';
-import { monthOptions, yearOptions } from './datetime/DateTime';
-import { expValidation } from '../schemas/FormSchemas';
-import Dropzone from './Dropzone';
+import Options from './Options';
+import { monthOptions, yearOptions } from './DateTime';
+import { expValidation } from '../../schemas/FormSchemas';
+import Dropzone from '../components/Dropzone';
 
-import './basicForm.css';
+import './experienceForm.css';
 
 class ExperienceForm extends Component {
-    state = {
-        isSubmitting: false,
-        imageFail: false
+
+    state = { summonDelete: false}
+
+    startDelete = event => {
+        this.setState({ summonDelete: true });
+        event.preventDefault();
     }
 
-    renderModalContents = () => {
-        const onSubmit = async values => {
-            const tempArr = this.props.workExperience;
-            let finalVals = values;
-            if (this.props.logo !== "") {
-                finalVals = { ...values, companyLogo: this.props.logo};
-            }
+    resetDelete = event => {
+        this.setState({ summonDelete: false });
+        event.preventDefault();
+    }
 
-            tempArr.push(finalVals)
-            this.props.editWorkExp({ workExperience: tempArr }, this.props.history);
-
-            // if (!_.isEqual(this.props.profile, values)) {
-            //     this.setState({ isSubmitting: true });
-                /*
-                    remember to remove equals check
-                    const tempArr = this.props.workExperience
-                    condition check: if props.logo not empty, add to values
-                    tempArr.push(values)
-                    tempArr.sort by time
-                    {workExperience: tempArr}
-                */
-            // } else {
-            //     this.props.history.push("/");
-            // }
-        }
-        const buttonLoad = this.state.isSubmitting ? "loading" : "";
-        const imageOk = () => {
-            this.setState({ imageFail: false});
-        }
-        const imageNotOk = () => {
-            this.setState({ imageFail: true });
-        }
-
+    renderForm() {
         return (
             <div>
                 <header className="ui segment basic-header">
@@ -61,16 +33,17 @@ class ExperienceForm extends Component {
                     </Link>
                 </header>
                 <Form
-                    onSubmit={onSubmit}
+                    onSubmit={this.props.onSubmit}
                     validate={expValidation}
-                    render={({ handleSubmit, submitting, values }) => (
+                    initialValues={this.props.currWorkExperience}
+                    render={({ handleSubmit, submitting }) => (
                         <form className="ui form testclass" onSubmit={handleSubmit}>
-                            {console.log(this.props.logo)}
                             <Dropzone
                                 image={this.props.logo}
                                 onLogoUpload={this.props.addWorkExpPic}
-                                imageOk={imageOk}
-                                imageNotOk={imageNotOk}
+                                pendingSwitch={this.props.pendingSwitch}
+                                uploadPrompt={this.props.uploadPrompt}
+                                promptSwitchOff={this.props.promptSwitchOff}
                             />
                             <div className="field">
                                 <label>Company</label>
@@ -105,10 +78,10 @@ class ExperienceForm extends Component {
                                                         <Options
                                                             options={options}
                                                             name={input.name}
+                                                            selectedValue={input.value}
                                                             onChange={(value) => input.onChange(value)}
                                                         />
-                                                        {console.log(meta)}
-                                                        <span className="form-error">{ meta.modified && meta.error }</span>
+                                                        <span className="form-error">{ (meta.modified || meta.submitFailed) ? meta.error: "" }</span>
                                                     </div>   
                                                 )
                                             }}
@@ -122,10 +95,11 @@ class ExperienceForm extends Component {
                                                         <Options
                                                             options={options}
                                                             name={input.name}
+                                                            selectedValue={input.value}
                                                             isYear
                                                             onChange={(value) => input.onChange(value)}
                                                         />
-                                                        <span className="form-error">{ meta.modified && meta.error }</span>
+                                                        <span className="form-error">{ (meta.modified || meta.submitFailed) ? meta.error: "" }</span>
                                                     </div>   
                                                 )
                                             }}
@@ -144,9 +118,10 @@ class ExperienceForm extends Component {
                                                         <Options
                                                             options={options}
                                                             name={input.name}
+                                                            selectedValue={input.value}
                                                             onChange={(value) => input.onChange(value)}
                                                         />
-                                                        <span className="form-error">{ meta.modified && meta.error }</span>
+                                                        <span className="form-error">{ (meta.modified || meta.submitFailed) ? meta.error: "" }</span>
                                                     </div>   
                                                 )
                                             }}
@@ -160,10 +135,11 @@ class ExperienceForm extends Component {
                                                         <Options
                                                             options={options}
                                                             name={input.name}
+                                                            selectedValue={input.value}
                                                             isYear
                                                             onChange={(value) => input.onChange(value)}
                                                         />
-                                                        <span className="form-error">{ meta.modified && meta.error }</span>
+                                                        <span className="form-error">{ (meta.modified || meta.submitFailed) ? meta.error: "" }</span>
                                                     </div>   
                                                 )
                                             }}
@@ -182,8 +158,17 @@ class ExperienceForm extends Component {
                                     )}
                                 </Field>
                             </div>
+                            { this.props.enableDelete && 
+                                <button
+                                    className="ui red button"
+                                    onClick={(event) => this.startDelete(event)}
+                                >
+                                    Delete
+                                </button>
+                            
+                            } 
                             <button 
-                                className={`ui green button ${buttonLoad}`} 
+                                className={`ui green button ${this.props.buttonLoad}`} 
                                 type="submit"
                                 disabled={submitting}
                             >
@@ -193,21 +178,45 @@ class ExperienceForm extends Component {
                     )}
                 />
             </div>
-        );
-    }
-
-    render() {
-        return (
-            <Modal itemsToRender={this.renderModalContents}/>
         )
     }
-};
+    
+    renderDeleteConfirmation() {
+        return (
+            <div>
+                <header className="ui segment basic-header">
+                    <h2>Confirm delete work experience</h2>
+                    <Link className="closed" to="/">
+                        <i className="close icon close-icon" />
+                    </Link>
+                </header>
+                <div className="ui text container testclass">
+                    <h4>Delete si bo? Wa scary leh, you confirm delete?</h4>
+                    <button 
+                        className="ui red button"
+                        onClick={event => this.props.deleteRequest(event)}
+                    >
+                        Delete
+                    </button>
+                    <button 
+                        className="ui button"
+                        onClick={event => this.resetDelete(event)}
+                    >
+                        Go Back
+                    </button>
+                </div>
+            </div>
 
-const mapStateToProps = state => {
-    return { 
-        logo: state.logo,
-        workExperience: state.profile.workExperience
-     };
+        )
+    }
+
+    render() {  
+        return (
+            <div>
+                {this.state.summonDelete ? this.renderDeleteConfirmation()  : this.renderForm()}
+            </div>
+        )
+    }
 }
 
-export default connect(mapStateToProps, { editWorkExp, addWorkExpPic })(ExperienceForm);
+export default ExperienceForm;

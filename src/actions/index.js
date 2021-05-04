@@ -76,21 +76,21 @@ const addWorkExpPic = (data) => dispatch => {
     );
 }
 
-const editWorkExp = (data, history) => async dispatch => {
+const addWorkExp = (data, history) => async dispatch => {
     const batch = writeBatch(db);
 
     batch.update(docRef, { ...data });
     await batch.commit();
 
     dispatch({ type: 'ADD_WORK_EXP', payload: data});
+    dispatch({ type: 'DELETE_LOGO'});
     history.push('/');
 }
-
 
 export {
     fetchProfile,
     editBasic,
     editProfilePic,
     addWorkExpPic,
-    editWorkExp
+    addWorkExp
 }

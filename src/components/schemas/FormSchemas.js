@@ -1,4 +1,4 @@
-import { monthStringToNum } from '../form/datetime/DateTime';
+import { monthStringToNum } from '../form/components/DateTime';
 
 const basicValidation = values => {
     const errors = {}

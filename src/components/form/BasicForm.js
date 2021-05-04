@@ -4,7 +4,7 @@ import { Form, Field } from 'react-final-form'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Dropzone from './Dropzone';
+import Dropzone from './components/Dropzone';
 import Modal from '../Modal';
 import { editBasic, editProfilePic } from '../../actions';
 import { basicValidation } from '../schemas/FormSchemas';
@@ -14,25 +14,29 @@ import './basicForm.css';
 class BasicForm extends Component {
     state = {
         isSubmitting: false,
-        imageFail: false
+        imagePending: false,
+        uploadPrompt: false
     }
 
     renderModalContents = () => {
         const onSubmit = async values => {
-            if (!_.isEqual(this.props.profile, values) && !this.state.imageFail) {
-                console.log('updating')
+            if (!_.isEqual(this.props.profile, values) && !this.state.imagePending) {
                 this.setState({ isSubmitting: true });
                 this.props.editBasic(values, this.props.history);
+            } else if (this.state.imagePending) {
+                this.setState({ uploadPrompt: true });
             } else {
                 this.props.history.push("/");
             }
         }
         const buttonLoad = this.state.isSubmitting ? "loading" : "";
-        const imageOk = () => {
-            this.setState({ imageFail: false});
+        const pendingSwitch = currState => {
+            console.log('hello');
+            this.setState({ imagePending: currState});
         }
-        const imageNotOk = () => {
-            this.setState({ imageFail: true });
+
+        const promptSwitchOff = () => {
+            this.setState({ uploadPrompt: false });
         }
 
         return (
@@ -52,8 +56,9 @@ class BasicForm extends Component {
                             <Dropzone 
                                 image={this.props.profile.profileImage} 
                                 onSubmit={this.props.editProfilePic}
-                                imageOk={imageOk}
-                                imageNotOk={imageNotOk}
+                                pendingSwitch={pendingSwitch}
+                                uploadPrompt={this.state.uploadPrompt}
+                                promptSwitchOff={promptSwitchOff}
                             />
                             <div className="field">
                                 <label>Name</label>
@@ -107,7 +112,9 @@ class BasicForm extends Component {
 
     render() {
         return (
-            <Modal itemsToRender={this.renderModalContents}/>
+            <div>
+                {this.props.profile.length !== 0 && <Modal itemsToRender={this.renderModalContents}/>}
+            </div>
         )
     }
 };

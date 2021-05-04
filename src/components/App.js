@@ -2,8 +2,9 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import BasicForm from './form/BasicForm';
-import ExperienceForm from './form/ExperienceForm';
 import Profile from './profile/Profile';
+import AddExperience from './form/AddExperience';
+import EditExperience from './form/EditExperience';
 
 const App = () => {
     return (
@@ -12,7 +13,8 @@ const App = () => {
             <div>
               <Route path="/" component={Profile} />
               <Route path="/basic_edit" component={BasicForm} />
-              <Route path="/experience_add" component={ExperienceForm} />
+              <Route path="/experience_add" component={AddExperience} />
+              <Route path="/experience_edit/:entry" render={(props)=> <EditExperience {...props} />} /> 
             </div>
           </BrowserRouter>
         </div>
