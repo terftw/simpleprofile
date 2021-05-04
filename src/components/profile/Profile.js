@@ -25,13 +25,18 @@ class Profile extends Component {
                                 <h3 className="job-title">{item.jobTitle}</h3>
                                 <h4>{item.company}</h4>
                                 <h5>{`${item.startMonth} ${item.startYear} - ${endMonthString}`}</h5>
-                                <p className="job-description">{item.jobDescription}</p>
+                                <div>
+                                    <pre className="job-description">{item.jobDescription}</pre>
+                                </div>
                             </div>
                         </div>
-                        <Link to={`/experience_edit/${index}`} className="edit-button-container">
-                            <i className="edit icon add-icon"></i>
-                        </Link>
-                        
+                        <div className="exp-logo">
+                            <div className="logo-container">
+                                <Link to={`/experience_edit/${index}`}>
+                                    <i className="pencil icon add-icon"></i>
+                                </Link>
+                            </div>
+                        </div>
                     </div>
                     {arr.length - 1 === index ? null : <div className="ui divider divide"></div>}
                 </div>
@@ -54,21 +59,31 @@ class Profile extends Component {
                 <div className="ui main text container add-margin">
                     <div className="first-segment ui segment">
                         <div className="flex-row">
-                            <img className="ui tiny circular image profile-pic " src={profile.profileImage} alt="profile" />
+                            <div className="profile-pic-container">
+                                <img className="profile-pic " src={profile.profileImage} alt="profile" />
+                            </div>
                             <div className="text-segment">
                                 <h1>{`${profile.firstName} ${profile.lastName}, ${profile.age}`}</h1>
                             </div>
-                            <Link to="/basic_edit" className="basic-logo">
-                                <i className="edit icon add-icon"></i>
-                            </Link>
+                            <div className="basic-logo">
+                                <div className="logo-container">
+                                    <Link to="/basic_edit">
+                                        <i className="pencil icon add-icon"></i>
+                                    </Link>
+                                </div>
+                            </div>
                         </div>    
                     </div>
                     <div className="ui segment">
                         <header className="experience-container">
                             <h2 className="experience-title">Work Experience</h2>
-                            <Link to="/experience_add" className="plus-logo">
-                                <i className="plus icon add-icon" />
-                            </Link>
+                            <div className="basic-logo">
+                                <div className="logo-container" >
+                                    <Link to="/experience_add">
+                                        <i className="plus icon add-icon" />
+                                    </Link>
+                                </div>
+                            </div>
                         </header>  
                         <div className="experience-list">
                             {this.renderList()}

@@ -21,7 +21,7 @@ body {
     background-color:rgb(243, 242, 239);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, pre {
     font-family: 'Open Sans', Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
     font-weight: 600;
     margin: 0px;
@@ -45,9 +45,18 @@ h4, h5 {
 }
 
 h4 {
-    font-weight: 400
+    font-weight: 400;
 }
 
 h5 {
-    font-weight: 300
+    font-weight: 300;
+}
+
+pre {
+    white-space: pre-wrap;       
+    white-space: -moz-pre-wrap;  
+    white-space: -pre-wrap;      
+    white-space: -o-pre-wrap;    
+    word-wrap: break-word;
+    font-weight: 400;
 }

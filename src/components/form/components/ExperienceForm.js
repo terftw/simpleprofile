@@ -26,8 +26,8 @@ class ExperienceForm extends Component {
     renderForm() {
         return (
             <div>
-                <header className="ui segment basic-header">
-                    <h2>Add Work Experience</h2>
+                <header className="ui dividing header basic-header">
+                    <h2 className="ui header">Add Work Experience</h2>
                     <Link className="closed" to="/">
                         <i className="close icon close-icon" />
                     </Link>
@@ -184,8 +184,8 @@ class ExperienceForm extends Component {
     renderDeleteConfirmation() {
         return (
             <div>
-                <header className="ui segment basic-header">
-                    <h2>Confirm delete work experience</h2>
+                <header className="ui dividng header basic-header">
+                    <h2 className="ui header">Confirm delete work experience</h2>
                     <Link className="closed" to="/">
                         <i className="close icon close-icon" />
                     </Link>

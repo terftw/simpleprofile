@@ -7,8 +7,18 @@
     margin-top: 2em;
 }
 
+.profile-pic-container {
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    width: 4rem;
+    margin-right: 1rem;
+}
+
 .profile-pic {
-    margin-right: 2em;
+    width:100%;
+    height:100%;
+    border-radius: 50%;
 }
 
 .company-logo {
@@ -53,16 +63,36 @@
     margin-top: 8px;
 }
 
-.plus-logo, .basic-logo {
+.job-description:after {
+    content:"";
+    display:inline-block;
+    width:0px;
+}
+
+.exp-logo, .basic-logo {
     padding: 8px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
 }
 
 .basic-logo {
     margin: auto 0 auto auto;
 }
 
-.plus-logo:hover, .basic-logo:hover, .edit-button-container:hover {
+.exp-logo {
+    margin: 0 0 auto auto;
+}
+
+.logo-container {
+    height: 1em;
+    width: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.exp-logo:hover, .basic-logo:hover {
     background-color: rgba(0,0,0,0.08);
     transition: 0.3s;
 }

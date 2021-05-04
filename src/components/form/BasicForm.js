@@ -41,8 +41,8 @@ class BasicForm extends Component {
 
         return (
             <div>
-                <header className="ui segment basic-header">
-                    <h2>Edit Basic Information</h2>
+                <header className="ui dividing header basic-header">
+                    <h2 className="ui header">Edit Basic Information</h2>
                     <Link className="closed" to="/">
                         <i className="close icon close-icon" />
                     </Link>
