@@ -12,19 +12,23 @@
 .image-container {
     display: flex;
     flex-direction: row;
-}
-
-.image-field {
-    display: flex;
-    flex-direction: column;
     margin-bottom: 32px !important;
 }
 
+.image-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.image-wrapper {
+    width: 144px;
+    height: 144px;
+}
 
 .profile-image {
-    margin-bottom: 8px;
-    width: 144px !important;
-    height: 144px !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .button-container {
@@ -43,10 +47,37 @@
 
 .image-preview {
     display: block;
-    margin: 0 0 .28571429rem 0;
     color: rgba(0,0,0,.87);
-    font-size: .92857143em;
     font-weight: 700;
     text-transform: none;
     text-align: center;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {}
+
+
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (max-width: 1026px) {
+    .image-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .image-link {
+        margin-bottom: 32px;
+    }
+
+    .dropzone-container {
+        margin: 0;
+    }
+}
+
+

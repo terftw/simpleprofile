@@ -5,6 +5,7 @@ import './dropzone.css';
 const Dropzone = (props) => {
     const [files, setFiles] = useState([]);
     const [invalid, setInvalid] = useState(false);
+    const [hasFile, setHasFile] = useState(true);
 
     const { 
         getRootProps, 
@@ -29,6 +30,8 @@ const Dropzone = (props) => {
                 setFiles([]);
                 setInvalid(true);
             }
+
+            setHasFile(true);
         }
     });
 
@@ -42,14 +45,24 @@ const Dropzone = (props) => {
         props.promptSwitchOff();
     };
 
+    const discardPicture = event => {
+        removeFile(files[0])();
+        event.preventDefault();
+    }
+
     const uploadPicture = event => {
-        if (props.onSubmit) {
-            props.onSubmit(files[0], props.image);
-        } else if (props.onLogoUpload) {
-            props.onLogoUpload(files[0]);
+        if (files.length === 0) {
+            setHasFile(false);
+        } else if (hasFile) {
+            if (props.onSubmit) {
+                props.onSubmit(files[0], props.image);
+            } else if (props.onLogoUpload) {
+                props.onLogoUpload(files[0]);
+            }
+    
+            removeFile(files[0])();
         }
 
-        removeFile(files[0])();
         event.preventDefault();
     }
 
@@ -67,15 +80,20 @@ const Dropzone = (props) => {
         [files]
     );
 
+    const submitDisabled = files.length === 0 ? "disabled" : "";
+    console.log(files.length && files[0].preview);
+
     return (
         <div className="image-field">
             <div className="image-container">
                 <div className="image-link">
-                    <img 
-                        className="circular ui image profile-image" 
-                        src={files.length ? files[0].preview : props.image}
-                        alt="preview"
-                    />
+                    <div className="image-wrapper">
+                        <img 
+                            className="circular ui image profile-image" 
+                            src={files.length ? files[0].preview : props.online ? props.image : props.image.preview}
+                            alt="preview"
+                        />
+                    </div>       
                     <label className="image-preview">{files.length ? "Image Preview" : "Current Image"}</label>
                 </div>
                 <div className="dropzone-container">
@@ -85,15 +103,22 @@ const Dropzone = (props) => {
                     </div>
                     <div>
                         <span className="upload-error">
-                            { invalid ? "only .png, .jpg and .jpeg image files are accepted": null }
-                            { props.uploadPrompt ? "You have a pending image upload" : null }
+                            { invalid && "only .png, .jpg and .jpeg image files are accepted" }
+                            { props.uploadPrompt && "You have a pending image upload"}
+                            { !hasFile && "Please give us a file to upload" }
                             <br></br>
-                            {fileRejectionsItems}
+                            { invalid && fileRejectionsItems }
                         </span>    
                     </div>
                     <div className="button-container">
                         <button
-                            className="ui button green"
+                            className={`ui button ${submitDisabled}`}
+                            onClick={discardPicture}
+                        >
+                            Discard
+                        </button>
+                        <button
+                            className={`ui button green ${submitDisabled}`}
                             onClick={uploadPicture}
                         >
                             Submit

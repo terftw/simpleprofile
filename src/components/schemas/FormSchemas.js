@@ -33,34 +33,37 @@ const expValidation = values => {
     if (!values.startYear) {
         errors.startYear = 'Required';
     }
-    if (!values.endMonth) {
-        errors.endMonth = 'Required';
+    if (!values.isCurrentJob) {
+        if (!values.endMonth) {
+            errors.endMonth = 'Required';
+        }
+        if (!values.endYear) {
+            errors.endYear = 'Required';
+        }
+
+        if (values.endMonth && values.endYear) {
+            let endTime = new Date(values.endYear, monthStringToNum[values.endMonth]);
+    
+            if (new Date() < endTime) {
+                errors.endMonth = `End date can't be past today's date`;
+            }
+        }
+
+        if (values.startMonth && values.startYear && values.endMonth && values.endYear) {
+            let startTime =  new Date(values.startYear, monthStringToNum[values.startMonth]);
+            let endTime =  new Date(values.endYear, monthStringToNum[values.endMonth]);
+    
+            if (endTime < startTime) {
+                errors.endMonth = `Your end date can't be earlier than your start date`;
+            }
+        }
     }
-    if (!values.endYear) {
-        errors.endYear = 'Required';
-    }
+
     if (values.startMonth && values.startYear) {
         let startTime = new Date(values.startYear, monthStringToNum[values.startMonth]);
-        console.log(startTime);
         if (new Date() < startTime) {
             console.log('error');
             errors.startMonth = `Start date can't be past today's date`;
-        }
-    }
-    if (values.endMonth && values.endYear) {
-        let endTime = new Date(values.endYear, monthStringToNum[values.endMonth]);
-
-        if (new Date() < endTime) {
-            errors.endMonth = `End date can't be past today's date`;
-        }
-    }
-
-    if (values.startMonth && values.startYear && values.endMonth && values.endYear) {
-        let startTime =  new Date(values.startYear, monthStringToNum[values.startMonth]);
-        let endTime =  new Date(values.endYear, monthStringToNum[values.endMonth]);
-
-        if (endTime < startTime) {
-            errors.endMonth = `Your end date can't be earlier than your start date`;
         }
     }
 

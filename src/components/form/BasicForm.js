@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import Dropzone from './components/Dropzone';
 import Modal from '../Modal';
-import { editBasic, editProfilePic } from '../../actions';
+import { editBasic, editProfilePic, offlineEditBasic } from '../../actions';
 import { basicValidation } from '../schemas/FormSchemas';
 
 import './basicForm.css';
@@ -22,7 +22,13 @@ class BasicForm extends Component {
         const onSubmit = async values => {
             if (!_.isEqual(this.props.profile, values) && !this.state.imagePending) {
                 this.setState({ isSubmitting: true });
-                this.props.editBasic(values, this.props.history);
+                
+                if (this.props.network) {
+                    this.props.editBasic(values, this.props.history);
+                } else {
+                    this.props.offlineEditBasic(values, this.props.history);
+                }
+                
             } else if (this.state.imagePending) {
                 this.setState({ uploadPrompt: true });
             } else {
@@ -31,7 +37,6 @@ class BasicForm extends Component {
         }
         const buttonLoad = this.state.isSubmitting ? "loading" : "";
         const pendingSwitch = currState => {
-            console.log('hello');
             this.setState({ imagePending: currState});
         }
 
@@ -41,19 +46,22 @@ class BasicForm extends Component {
 
         return (
             <div>
-                <header className="ui dividing header basic-header">
-                    <h2 className="ui header">Edit Basic Information</h2>
-                    <Link className="closed" to="/">
-                        <i className="close icon close-icon" />
-                    </Link>
+                <header className="ui dividing header text-header">
+                    <h2 className="ui header basic-header">Edit Basic Information</h2>
+                    <div className="logo-container">
+                        <Link className="closed" to="/">
+                            <i className="close icon close-icon" />
+                        </Link>
+                    </div>
                 </header>
                 <Form
                     onSubmit={onSubmit}
                     initialValues={this.props.profile}
                     validate={basicValidation}
                     render={({ handleSubmit, submitting }) => (
-                        <form className="ui form testclass" onSubmit={handleSubmit}>
-                            <Dropzone 
+                        <form className="ui form form-container" onSubmit={handleSubmit}>
+                            <Dropzone
+                                online={this.props.network}
                                 image={this.props.profile.profileImage} 
                                 onSubmit={this.props.editProfilePic}
                                 pendingSwitch={pendingSwitch}
@@ -113,14 +121,17 @@ class BasicForm extends Component {
     render() {
         return (
             <div>
-                {this.props.profile.length !== 0 && <Modal itemsToRender={this.renderModalContents}/>}
+                {this.props.profile.length !== 0 && <Modal itemsToRender={this.renderModalContents} />}
             </div>
         )
     }
 };
 
 const mapStateToProps = state => {
-    return { profile: state.profile };
+    return { 
+        profile: state.profile,
+        network: state.network
+    };
 }
 
-export default connect(mapStateToProps, { editBasic, editProfilePic })(BasicForm);
+export default connect(mapStateToProps, { editBasic, editProfilePic, offlineEditBasic })(BasicForm);

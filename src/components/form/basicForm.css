@@ -1,16 +1,16 @@
-.testclass{
-    margin: 5% 15%;
-    width: 70%;
+.form-container{
+    margin: 5% 20%;
+    width: 60%;
 }
 
 .basic-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0 !important;
+    
 }
 
 .closed {
-    padding: 4px;
+    padding: 8px;
     border-radius: 50%;
 }
 
@@ -39,4 +39,42 @@
 .edit-icon {
     font-size: 18px !important;
     margin: auto !important;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.text-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px !important;
+}
+
+.logo-container {
+    height: 1em;
+    width: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (max-width: 768px) {
+    .form-container{
+        margin: 5% 10%;
+        width: 80%;
+    }
+    .basic-header {
+        font-size: 16px;
+    }
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .form-container{
+        margin: 5% 0%;
+        width: 100%;
+    }
 }

@@ -10,8 +10,8 @@
 .profile-pic-container {
     display: flex;
     align-items: center;
-    height: 4rem;
-    width: 4rem;
+    height: 5rem;
+    width: 5rem;
     margin-right: 1rem;
 }
 
@@ -23,6 +23,19 @@
 
 .company-logo {
     margin-right: 12px;
+}
+
+.company-logo-container {
+    display: flex;
+    align-items: center;
+    height: 4em;
+    width: 4em;
+}
+
+.logo {
+    width:100%;
+    height:100%;
+    border-radius: 50%;
 }
 
 .text-segment {
@@ -61,12 +74,6 @@
 
 .job-description {
     margin-top: 8px;
-}
-
-.job-description:after {
-    content:"";
-    display:inline-block;
-    width:0px;
 }
 
 .exp-logo, .basic-logo {
@@ -110,4 +117,22 @@
     margin-left: auto;
     padding: 8px;
     border-radius: 50%;
+}
+
+.offline-display {
+    border: 2px solid #ff7675;
+    border-radius: 8px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+.offline-msg {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.offline-button {
+    margin: 0 auto !important;
 }

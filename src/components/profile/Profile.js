@@ -3,13 +3,19 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import LoadingSpinner from '../spinner/LoadingSpinner';
-import { fetchProfile } from '../../actions';
+import { fetchProfile, retrySubmit } from '../../actions';
 import './profile.css';
 
 class Profile extends Component {
     componentDidMount() {
         this.props.fetchProfile();
     }
+
+    retryProfileSubmit = event => {
+        this.props.retrySubmit(this.props.profile);
+        event.preventDefault()
+    }
+
     renderList = () => {
         return this.props.profile.length !== 0 && this.props.profile.workExperience.map((item, index, arr) => {
             const endMonthString = item.isCurrentJob ? "Present" :`${item.endMonth} ${item.endYear}`;
@@ -19,7 +25,9 @@ class Profile extends Component {
                     <div className="job-item-segment">
                         <div className="job-item">
                             <div className="company-logo">
-                                <img className="" src={item.companyLogo} height="40" width="40" alt="company logo"/>
+                                <div className="company-logo-container">
+                                    <img className="logo" src={item.companyLogo} alt="company logo"/>
+                                </div>
                             </div>
                             <div>
                                 <h3 className="job-title">{item.jobTitle}</h3>
@@ -46,9 +54,10 @@ class Profile extends Component {
     }
     renderMain() {
         const { profile } = this.props;
-        console.log(this.props);
+
         return (
             <div>
+                {console.log(this.props.network)}
                 <div className="ui pointing menu">
                     <div className="ui container">
                         <a href="#" className="header item">Test 1</a>
@@ -57,10 +66,16 @@ class Profile extends Component {
                     </div>
                 </div>
                 <div className="ui main text container add-margin">
+                    {!this.props.network && 
+                        <div className="offline-display">
+                            <h3 className="offline-msg">You are currently offline</h3>
+                            <button className="ui button red offline-button" onClick={this.retryProfileSubmit}>Submit current changes</button>
+                        </div>
+                    }
                     <div className="first-segment ui segment">
                         <div className="flex-row">
                             <div className="profile-pic-container">
-                                <img className="profile-pic " src={profile.profileImage} alt="profile" />
+                                <img className="profile-pic " src={this.props.network ? profile.profileImage : profile.profileImage.preview} alt="profile" />
                             </div>
                             <div className="text-segment">
                                 <h1>{`${profile.firstName} ${profile.lastName}, ${profile.age}`}</h1>
@@ -103,7 +118,10 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => {
-    return { profile: state.profile };
+    return { 
+        profile: state.profile,
+        network: state.network
+    };
 }
 
-export default connect(mapStateToProps, { fetchProfile })(Profile);
+export default connect(mapStateToProps, { fetchProfile, retrySubmit })(Profile);
