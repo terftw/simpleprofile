@@ -64,6 +64,11 @@
     margin-bottom: 16px;
 }
 
+.date-select {
+    min-height: 20px;
+    padding: 0 8px !important;
+}
+
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (max-width: 768px) {
     .form-container{
@@ -71,7 +76,7 @@
         width: 80%;
     }
     .basic-header {
-        font-size: 16px;
+        font-size: 16px !important;
     }
 }
 

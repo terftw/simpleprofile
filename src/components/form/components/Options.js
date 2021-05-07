@@ -4,7 +4,7 @@ import '../basicForm.css';
 
 const Opts = (props) => {
     return (
-        <select className="ui selection dropdown" name={props.name} value={props.selectedValue} onChange={props.onChange}>
+        <select className="ui selection dropdown date-select" name={props.name} value={props.selectedValue} onChange={props.onChange}>
             <option value="">{ props.isYear ? "Year" : "Month" }</option>
             {props.options.map((x) => {
                 return (
