@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { Form, Field } from 'react-final-form'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -16,11 +15,11 @@ class BasicForm extends Component {
         isSubmitting: false,
         imagePending: false,
         uploadPrompt: false
-    }
+    } 
 
     renderModalContents = () => {
         const onSubmit = async values => {
-            if (!_.isEqual(this.props.profile, values) && !this.state.imagePending) {
+            if (!this.state.imagePending) {
                 this.setState({ isSubmitting: true });
                 
                 if (this.props.network) {
@@ -60,14 +59,20 @@ class BasicForm extends Component {
                     validate={basicValidation}
                     render={({ handleSubmit, submitting }) => (
                         <form className="ui form form-container" onSubmit={handleSubmit}>
-                            <Dropzone
-                                online={this.props.network}
-                                image={this.props.profile.profileImage} 
-                                onSubmit={this.props.editProfilePic}
-                                pendingSwitch={pendingSwitch}
-                                uploadPrompt={this.state.uploadPrompt}
-                                promptSwitchOff={promptSwitchOff}
-                            />
+                            { this.props.network ? 
+                                <Dropzone
+                                    online={this.props.network}
+                                    image={this.props.profile.profileImage} 
+                                    onSubmit={this.props.editProfilePic}
+                                    pendingSwitch={pendingSwitch}
+                                    uploadPrompt={this.state.uploadPrompt}
+                                    promptSwitchOff={promptSwitchOff}
+                                />
+                                :
+                                <div className="offline-display disable-img-upload">
+                                    <h3 className="offline-msg">Image upload is disabled when you are offline</h3>
+                                </div>
+                            }   
                             <div className="field">
                                 <label>Name</label>
                                 <div className="two fields">

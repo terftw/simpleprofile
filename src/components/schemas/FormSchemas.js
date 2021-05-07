@@ -62,7 +62,6 @@ const expValidation = values => {
     if (values.startMonth && values.startYear) {
         let startTime = new Date(values.startYear, monthStringToNum[values.startMonth]);
         if (new Date() < startTime) {
-            console.log('error');
             errors.startMonth = `Start date can't be past today's date`;
         }
     }

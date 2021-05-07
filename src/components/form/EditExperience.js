@@ -17,6 +17,7 @@ class EditExperience extends Component {
             if (this.state.imagePending) {
                 this.setState({ uploadPrompt: true })
             } else {
+                this.setState({ isSubmitting: true});
                 const newWorkExperience = [...this.props.profile.workExperience];
                 let finalVals = values;
                 if (this.props.logo !== "") {
@@ -47,16 +48,16 @@ class EditExperience extends Component {
             this.props.addWorkExp({ workExperience: newWorkExperience }, this.props.history);
             event.preventDefault();
         }
-        const jobIndexWithCurrentJob = this.props.profile.workExperience.filter(item => item.isCurrentJob)[0];
         const buttonLoad = this.state.isSubmitting ? "loading" : "";
         const pendingSwitch = currState => { this.setState({ imagePending: currState}) }
         const promptSwitchOff = () => { this.setState({ uploadPrompt: false }) }
     
         return ( 
-            <ExperienceForm 
+            <ExperienceForm
+                online={this.props.network}
                 onSubmit={onSubmit}
+                isSubmitting={this.state.isSubmitting}
                 currWorkExperience={this.props.profile.workExperience[this.props.match.params.entry]}
-                jobIndexWithCurrentJob={jobIndexWithCurrentJob}
                 pendingSwitch={pendingSwitch}
                 promptSwitchOff={promptSwitchOff}
                 uploadPrompt={this.state.uploadPrompt}

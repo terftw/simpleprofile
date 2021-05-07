@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 
 import Modal from '../Modal';
 import ExperienceForm from './components/ExperienceForm';
-import { addWorkExp, addWorkExpPic } from '../../actions';
+import { addWorkExp, addWorkExpPic, offlineAddWorkExp } from '../../actions';
+import { DEFAULT_PIC } from '../../constants/ProfileConstants';
 
 class AddExperience extends Component {
     state = {
@@ -18,14 +19,21 @@ class AddExperience extends Component {
             if (this.state.imagePending) {
                 this.setState({ uploadPrompt: true })
             } else {
-                const tempArr = this.props.profile.workExperience;
+                const tempArr = [ ...this.props.profile.workExperience ];
                 let finalVals = values;
                 if (this.props.logo !== "") {
                     finalVals = { ...values, companyLogo: this.props.logo};
+                } else {
+                    finalVals = { ...values, companyLogo: DEFAULT_PIC };
                 }
     
                 tempArr.push(finalVals)
-                this.props.addWorkExp({ workExperience: tempArr }, this.props.history);
+                if (this.props.network) {
+                    this.props.addWorkExp({ workExperience: tempArr }, this.props.history);
+                } else {
+                    this.props.offlineAddWorkExp({ workExperience: tempArr }, this.props.history);
+                }
+                
             } 
         }
         const buttonLoad = this.state.isSubmitting ? "loading" : "";
@@ -38,7 +46,8 @@ class AddExperience extends Component {
         }
 
         return ( 
-            <ExperienceForm 
+            <ExperienceForm
+                online={this.props.network}
                 onSubmit={onSubmit}
                 pendingSwitch={pendingSwitch}
                 promptSwitchOff={promptSwitchOff}
@@ -61,8 +70,9 @@ class AddExperience extends Component {
 const mapStateToProps = state => {
     return { 
         logo: state.logo,
-        profile: state.profile
+        profile: state.profile,
+        network: state.network
      };
 }
 
-export default connect(mapStateToProps, { addWorkExp, addWorkExpPic })(AddExperience);
+export default connect(mapStateToProps, { addWorkExp, addWorkExpPic, offlineAddWorkExp })(AddExperience);

@@ -60,7 +60,6 @@ const monthOptions = [
         text: "December"
     },
 ]
-
 const monthStringToNum = {
     "January": 0,
     "February": 1,
@@ -75,12 +74,9 @@ const monthStringToNum = {
     "November": 10,
     "December": 11
 }
-
 const generateYears = current => {
     const arr = [];
-    const yearOption = {
-
-    }
+    const yearOption = {};
 
     for (let i = current; i >= 1962; i--) {
         yearOption.key = i;
@@ -91,7 +87,6 @@ const generateYears = current => {
 
     return arr;
 }
-
 const currentYear = new Date().getFullYear();
 const yearOptions = generateYears(currentYear);
 

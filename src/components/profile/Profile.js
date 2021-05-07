@@ -3,17 +3,83 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import LoadingSpinner from '../spinner/LoadingSpinner';
-import { fetchProfile, retrySubmit } from '../../actions';
+import { INITIAL, RECONNECTION_SUCCESS, RECONNECTION_FAIL } from '../../constants/ProfileConstants';
+import { fetchProfile, retrySubmit, tryingResubmit } from '../../actions';
 import './profile.css';
 
 class Profile extends Component {
+    state = {
+        hasReconnected: INITIAL,
+    }
+
+    retryDisplayMsg = () => {
+        switch(this.state.hasReconnected) {
+            case INITIAL:
+            case RECONNECTION_FAIL:
+                return "You are currently offline 😞";
+            case RECONNECTION_SUCCESS:
+                return "Yay! You are back on! 😃Your local changes have been submitted successfully";
+            default:
+                return "Something is wrong"
+        }
+    }
+    retryDisplayButtonMsg = () => {
+        switch(this.state.hasReconnected) {
+            case INITIAL:
+            case RECONNECTION_FAIL:
+                return "Submit current changes";
+            case RECONNECTION_SUCCESS:
+                return "Dismiss";
+            default:
+                return "Something is wrong"
+        }
+    }
+    retryDisplayColor = () => {
+        switch(this.state.hasReconnected) {
+            case INITIAL:
+            case RECONNECTION_FAIL:
+                return "red";
+            case RECONNECTION_SUCCESS:
+                return "green";
+            default:
+                return "Something is wrong"
+        }
+    }
+    borderColor = () => {
+        switch(this.state.hasReconnected) {
+            case INITIAL:
+            case RECONNECTION_FAIL:
+                return "red-border";
+            case RECONNECTION_SUCCESS:
+                return "green-border";
+            default:
+                return "Something is wrong"
+        }
+    }
+    isLoading = () => { return this.props.offline ? "loading" : null; }
+    activateRetryButton = event => {
+        this.props.tryingResubmit();
+        if (this.state.hasReconnected !== RECONNECTION_SUCCESS) {
+            this.props.retrySubmit(this.props.profile);
+        } else {
+            this.setState({ hasReconnected: INITIAL });
+        }
+        
+        event.preventDefault()
+    }
+
     componentDidMount() {
         this.props.fetchProfile();
     }
 
-    retryProfileSubmit = event => {
-        this.props.retrySubmit(this.props.profile);
-        event.preventDefault()
+    componentDidUpdate(prevProps, prevState) {
+         if (!prevProps.network && this.props.network) {
+            this.setState({ hasReconnected: RECONNECTION_SUCCESS, reconnectButtonIsLoading: false });
+        } else if (prevProps.network && !this.props.network) {
+            if (this.state.hasReconnected === INITIAL) {
+                this.setState({ hasReconnected: RECONNECTION_FAIL });
+            }
+        }
     }
 
     renderList = () => {
@@ -48,7 +114,6 @@ class Profile extends Component {
                     </div>
                     {arr.length - 1 === index ? null : <div className="ui divider divide"></div>}
                 </div>
-                
             )
         })
     }
@@ -57,25 +122,27 @@ class Profile extends Component {
 
         return (
             <div>
-                {console.log(this.props.network)}
                 <div className="ui pointing menu">
                     <div className="ui container">
-                        <a href="#" className="header item">Test 1</a>
-                        <a href="#" className="item">Test 2</a>
-                        <a href="#" className="item">Test 3</a>
                     </div>
-                </div>
+                </div> 
                 <div className="ui main text container add-margin">
-                    {!this.props.network && 
-                        <div className="offline-display">
-                            <h3 className="offline-msg">You are currently offline</h3>
-                            <button className="ui button red offline-button" onClick={this.retryProfileSubmit}>Submit current changes</button>
+                    {this.state.hasReconnected !== INITIAL && 
+                        <div className={`offline-display ${this.borderColor()}`}>
+                            <h3 className="offline-msg">{this.retryDisplayMsg()}</h3>
+                            <button 
+                                className={`ui button ${this.retryDisplayColor()} ${this.isLoading()} offline-button`} 
+                                onClick={this.activateRetryButton}
+                                disabled={this.props.offline}
+                            >
+                                {this.retryDisplayButtonMsg()}
+                            </button>
                         </div>
                     }
                     <div className="first-segment ui segment">
                         <div className="flex-row">
                             <div className="profile-pic-container">
-                                <img className="profile-pic " src={this.props.network ? profile.profileImage : profile.profileImage.preview} alt="profile" />
+                                <img className="profile-pic " src={profile.profileImage.preview ? profile.profileImage.preview : profile.profileImage} alt="profile" />
                             </div>
                             <div className="text-segment">
                                 <h1>{`${profile.firstName} ${profile.lastName}, ${profile.age}`}</h1>
@@ -120,8 +187,9 @@ class Profile extends Component {
 const mapStateToProps = state => {
     return { 
         profile: state.profile,
-        network: state.network
+        network: state.network,
+        offline: state.offline
     };
 }
 
-export default connect(mapStateToProps, { fetchProfile, retrySubmit })(Profile);
+export default connect(mapStateToProps, { fetchProfile, retrySubmit, tryingResubmit })(Profile);

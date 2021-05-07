@@ -120,12 +120,19 @@
 }
 
 .offline-display {
-    border: 2px solid #ff7675;
     border-radius: 8px;
     background: white;
     display: flex;
     flex-direction: column;
     padding: 2rem;
+}
+
+.red-border {
+    border: 2px solid #ff7675;
+}
+
+.green-border {
+    border: 2px solid #00b894;  
 }
 
 .offline-msg {

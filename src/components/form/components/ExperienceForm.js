@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { Form, Field } from 'react-final-form'
 import { Link } from 'react-router-dom';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 
 import Options from './Options';
 import { monthOptions, yearOptions } from './DateTime';
 import { expValidation } from '../../schemas/FormSchemas';
+import { DEFAULT_PIC } from '../../../constants/ProfileConstants';
 import Dropzone from '../components/Dropzone';
 
 import './experienceForm.css';
 
 class ExperienceForm extends Component {
 
-    state = { summonDelete: false}
+    state = { 
+        summonDelete: false,
+    }
 
     startDelete = event => {
         this.setState({ summonDelete: true });
@@ -25,7 +29,7 @@ class ExperienceForm extends Component {
     }
 
     showImage = () => {
-        let imageLink = this.props.isEdit ? this.props.currWorkExperience.companyLogo : "https://firebasestorage.googleapis.com/v0/b/glints-demo.appspot.com/o/images%2Fplaceholder.png?alt=media&token=5131e7e2-7a74-492e-8389-e63ffc0234d6";
+        let imageLink = this.props.isEdit ? this.props.currWorkExperience && this.props.currWorkExperience.companyLogo : DEFAULT_PIC;
         return this.props.logo === "" ? imageLink : this.props.logo;
     }
 
@@ -46,13 +50,20 @@ class ExperienceForm extends Component {
                     initialValues={this.props.currWorkExperience}
                     render={({ handleSubmit, submitting, values }) => (
                         <form className="ui form form-container" onSubmit={handleSubmit}>
-                            <Dropzone
-                                image={this.showImage()}
-                                onLogoUpload={this.props.addWorkExpPic}
-                                pendingSwitch={this.props.pendingSwitch}
-                                uploadPrompt={this.props.uploadPrompt}
-                                promptSwitchOff={this.props.promptSwitchOff}
-                            />
+                            { this.props.online ?
+                                <Dropzone
+                                    online={this.props.online}
+                                    image={this.showImage()}
+                                    onLogoUpload={this.props.addWorkExpPic}
+                                    pendingSwitch={this.props.pendingSwitch}
+                                    uploadPrompt={this.props.uploadPrompt}
+                                    promptSwitchOff={this.props.promptSwitchOff}
+                                />
+                                :
+                                <div className="offline-display disable-img-upload">
+                                    <h3 className="offline-msg">Image upload is disabled when you are offline</h3>
+                                </div>
+                            }
                             <div className="field">
                                 <label>Company</label>
                                 <Field name="company">
@@ -183,6 +194,7 @@ class ExperienceForm extends Component {
                                     <button
                                         className="ui red button"
                                         onClick={(event) => this.startDelete(event)}
+                                        disabled={this.props.isSubmitting || this.props.uploadPrompt}
                                     >
                                         Delete
                                     </button>
@@ -190,7 +202,7 @@ class ExperienceForm extends Component {
                                 <button 
                                     className={`ui green button ${this.props.buttonLoad}`} 
                                     type="submit"
-                                    disabled={submitting}
+                                    disabled={submitting || this.props.uploadPrompt}
                                 >
                                     {this.props.isEdit ? "Edit" : "Add"}
                                 </button>
@@ -204,29 +216,32 @@ class ExperienceForm extends Component {
     
     renderDeleteConfirmation() {
         return (
-            <div>
-                <header className="ui dividng header basic-header">
-                    <h2 className="ui header">Confirm delete work experience</h2>
-                    <Link className="closed" to="/">
-                        <i className="close icon close-icon" />
-                    </Link>
-                </header>
-                <div className="ui text container testclass">
-                    <h4>Delete si bo? Wa scary leh, you confirm delete?</h4>
-                    <button 
-                        className="ui red button"
-                        onClick={event => this.props.deleteRequest(event)}
-                    >
-                        Delete
-                    </button>
-                    <button 
-                        className="ui button"
-                        onClick={event => this.resetDelete(event)}
-                    >
-                        Go Back
-                    </button>
+            <Rodal visible={this.state.summonDelete} onClose={this.resetDelete}>
+                <div className="delete-confirm">
+                    <header className="ui dividng header basic-header">
+                        <h2 className="ui header">Deleting experience</h2>
+                    </header>
+                    <div className="ui divider"></div>
+                    <div className="del-container">
+                        <h3 className="del-text">Are you sure you want to delete this position?</h3>
+                        <div className="ui divider"></div>
+                        <div className="del-button-container">
+                            <button 
+                                className="ui button"
+                                onClick={event => this.resetDelete(event)}
+                            >
+                                Go Back
+                            </button>
+                            <button 
+                                className="ui red button"
+                                onClick={event => this.props.deleteRequest(event)}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </Rodal>
 
         )
     }
@@ -234,7 +249,8 @@ class ExperienceForm extends Component {
     render() {  
         return (
             <div>
-                {this.state.summonDelete ? this.renderDeleteConfirmation()  : this.renderForm()}
+                {this.renderDeleteConfirmation()}
+                {this.renderForm()}
             </div>
         )
     }

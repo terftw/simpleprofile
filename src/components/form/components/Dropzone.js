@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+
+import LoadingSpinner from '../../spinner/LoadingSpinner';
 import './dropzone.css';
 
 const Dropzone = (props) => {
     const [files, setFiles] = useState([]);
     const [invalid, setInvalid] = useState(false);
     const [hasFile, setHasFile] = useState(true);
+
+    const [imageLoading, setImageLoading] = useState(true);
 
     const { 
         getRootProps, 
@@ -51,6 +55,7 @@ const Dropzone = (props) => {
     }
 
     const uploadPicture = event => {
+        setImageLoading(true);
         if (files.length === 0) {
             setHasFile(false);
         } else if (hasFile) {
@@ -74,23 +79,25 @@ const Dropzone = (props) => {
 
     useEffect(
         () => () => {
-        // Make sure to revoke the data uris to avoid memory leaks
         files.forEach(file => URL.revokeObjectURL(file.preview));
         },
         [files]
     );
 
-    const submitDisabled = files.length === 0 ? "disabled" : "";
-    console.log(files.length && files[0].preview);
+    const submitDisabled = (files.length === 0 || imageLoading) ? "disabled" : "";
+    const imgFlash = imageLoading ? "set-invisible" : "";
 
     return (
         <div className="image-field">
             <div className="image-container">
                 <div className="image-link">
                     <div className="image-wrapper">
+                        {imageLoading && <LoadingSpinner />}
                         <img 
-                            className="circular ui image profile-image" 
-                            src={files.length ? files[0].preview : props.online ? props.image : props.image.preview}
+                            className={`circular ui image profile-image ${imgFlash}`}
+                            src={files.length ? files[0].preview : props.image}
+                            onError={() => setImageLoading(false)}
+                            onLoad={() => setImageLoading(false)}
                             alt="preview"
                         />
                     </div>       
@@ -98,7 +105,7 @@ const Dropzone = (props) => {
                 </div>
                 <div className="dropzone-container">
                     <div className="dropzone" {...getRootProps()}>
-                        <input {...getInputProps()} />
+                        <input {...getInputProps()} disabled={imageLoading}/>
                         <span>Drag or click here to upload image</span>
                     </div>
                     <div>
@@ -114,12 +121,14 @@ const Dropzone = (props) => {
                         <button
                             className={`ui button ${submitDisabled}`}
                             onClick={discardPicture}
+                            disabled={imageLoading}
                         >
                             Discard
                         </button>
                         <button
                             className={`ui button green ${submitDisabled}`}
                             onClick={uploadPicture}
+                            disabled={imageLoading}
                         >
                             Submit
                         </button>
