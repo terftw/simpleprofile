@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Modal from '../Modal';
 import ExperienceForm from './components/ExperienceForm';
 import { addWorkExp, addWorkExpPic, offlineAddWorkExp } from '../../actions';
+import { timeSort } from './components/DateTime';
 
 class EditExperience extends Component {
     state = {
@@ -33,11 +34,12 @@ class EditExperience extends Component {
                 }
     
                 newWorkExperience.splice(this.props.match.params.entry, 1, finalVals);
-                
+                const sortedExps = timeSort(newWorkExperience);
+
                 if (this.props.network) {
-                    this.props.addWorkExp({ workExperience: newWorkExperience }, this.props.history);
+                    this.props.addWorkExp({ workExperience: sortedExps }, this.props.history);
                 } else {
-                    this.props.offlineAddWorkExp({ workExperience: newWorkExperience }, this.props.history);
+                    this.props.offlineAddWorkExp({ workExperience: sortedExps }, this.props.history);
                 } 
             } 
         }
@@ -45,7 +47,13 @@ class EditExperience extends Component {
             const newWorkExperience = [...this.props.profile.workExperience];
             newWorkExperience.splice(this.props.match.params.entry, 1);
 
-            this.props.addWorkExp({ workExperience: newWorkExperience }, this.props.history);
+            const sortedExps = timeSort(newWorkExperience);
+            if (this.props.network) {
+                this.props.addWorkExp({ workExperience: sortedExps }, this.props.history);
+            } else {
+                this.props.offlineAddWorkExp({ workExperience: sortedExps }, this.props.history);
+            } 
+            
             event.preventDefault();
         }
         const buttonLoad = this.state.isSubmitting ? "loading" : "";

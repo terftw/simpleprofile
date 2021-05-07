@@ -5,6 +5,7 @@ import Modal from '../Modal';
 import ExperienceForm from './components/ExperienceForm';
 import { addWorkExp, addWorkExpPic, offlineAddWorkExp } from '../../actions';
 import { DEFAULT_PIC } from '../../constants/ProfileConstants';
+import { timeSort } from './components/DateTime';
 
 class AddExperience extends Component {
     state = {
@@ -26,14 +27,14 @@ class AddExperience extends Component {
                 } else {
                     finalVals = { ...values, companyLogo: DEFAULT_PIC };
                 }
-    
-                tempArr.push(finalVals)
-                if (this.props.network) {
-                    this.props.addWorkExp({ workExperience: tempArr }, this.props.history);
-                } else {
-                    this.props.offlineAddWorkExp({ workExperience: tempArr }, this.props.history);
-                }
                 
+                tempArr.push(finalVals)
+                const sortedExps = timeSort(tempArr);
+                if (this.props.network) {
+                    this.props.addWorkExp({ workExperience: sortedExps }, this.props.history);
+                } else {
+                    this.props.offlineAddWorkExp({ workExperience: sortedExps }, this.props.history);
+                }
             } 
         }
         const buttonLoad = this.state.isSubmitting ? "loading" : "";

@@ -90,8 +90,22 @@ const generateYears = current => {
 const currentYear = new Date().getFullYear();
 const yearOptions = generateYears(currentYear);
 
+const timeSort = (workExps) => {
+    const expToSort = [ ...workExps ];
+
+    expToSort.sort((currExp, nextExp) => {
+        const currTime =  new Date(currExp.startYear, monthStringToNum[currExp.startMonth]);
+        const nextTime =  new Date(nextExp.startYear, monthStringToNum[nextExp.startMonth]);
+
+        return (nextTime - currTime);
+    })
+
+    return expToSort;
+}
+
 export {
     monthOptions,
     monthStringToNum,
-    yearOptions
+    yearOptions,
+    timeSort
 }
