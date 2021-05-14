@@ -29,6 +29,7 @@ class AddExperience extends Component {
                 }
                 
                 tempArr.push(finalVals)
+                
                 const sortedExps = timeSort(tempArr);
                 if (this.props.network) {
                     this.props.addWorkExp({ workExperience: sortedExps }, this.props.history);
