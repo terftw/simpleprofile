@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Dropzone from './components/Dropzone';
-import Modal from '../Modal';
+import Modal from '../modal/Modal';
 import { editBasic, editProfilePic, offlineEditBasic } from '../../actions';
 import { basicValidation } from '../schemas/FormSchemas';
 

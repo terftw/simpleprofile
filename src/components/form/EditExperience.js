@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 
-import Modal from '../Modal';
+import Modal from '../modal/Modal';
 import ExperienceForm from './components/ExperienceForm';
 import { addWorkExp, addWorkExpPic, offlineAddWorkExp } from '../../actions';
 import { timeSort } from './components/DateTime';
