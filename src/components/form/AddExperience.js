@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import Modal from '../Modal';
@@ -20,7 +21,7 @@ class AddExperience extends Component {
             if (this.state.imagePending) {
                 this.setState({ uploadPrompt: true })
             } else {
-                const tempArr = [ ...this.props.profile.workExperience ];
+                const tempArr = _.cloneDeep(this.props.profile.workExperience);
                 let finalVals = values;
                 if (this.props.logo !== "") {
                     finalVals = { ...values, companyLogo: this.props.logo};

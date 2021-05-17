@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import Modal from '../Modal';
@@ -19,7 +20,7 @@ class EditExperience extends Component {
                 this.setState({ uploadPrompt: true })
             } else {
                 this.setState({ isSubmitting: true});
-                const newWorkExperience = [...this.props.profile.workExperience];
+                const newWorkExperience =_.cloneDeep(this.props.profile.workExperience);
                 let finalVals = values;
                 if (this.props.logo !== "") {
                     finalVals = { ...values, companyLogo: this.props.logo };
@@ -44,7 +45,7 @@ class EditExperience extends Component {
             } 
         }
         const deleteRequest = event => {
-            const newWorkExperience = [...this.props.profile.workExperience];
+            const newWorkExperience = _.cloneDeep(this.props.profile.workExperience);
             newWorkExperience.splice(this.props.match.params.entry, 1);
 
             const sortedExps = timeSort(newWorkExperience);
