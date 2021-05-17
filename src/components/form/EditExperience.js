@@ -22,7 +22,7 @@ class EditExperience extends Component {
                 const newWorkExperience = [...this.props.profile.workExperience];
                 let finalVals = values;
                 if (this.props.logo !== "") {
-                    finalVals = { ...values, companyLogo: this.props.logo};
+                    finalVals = { ...values, companyLogo: this.props.logo };
                 }
 
                 if (values.isCurrentJob) {
@@ -30,7 +30,7 @@ class EditExperience extends Component {
                         endMonth: "",
                         endYear: ""
                     };
-                    finalVals = { ...finalVals,  ...emptyEndDate};
+                    finalVals = { ...finalVals,  ...emptyEndDate };
                 }
     
                 newWorkExperience.splice(this.props.match.params.entry, 1, finalVals);
