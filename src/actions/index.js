@@ -36,8 +36,6 @@ const editBasic = (data, history) => async dispatch => {
     }
 }
 const editProfilePic = (data, link) => dispatch => {
-    console.log(data)
-    console.log(link)
     const storageRef = ref(storage, `images/profilepic.jpg`);
     const uploadTask = uploadBytesResumable(storageRef, data);
 
@@ -146,7 +144,6 @@ const tryingResubmit = () => {
 }
 
 const startImageUpload = () => {
-    console.log('started');
     return { 
         type: 'START_UPLOAD'
     }

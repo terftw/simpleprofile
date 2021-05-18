@@ -53,7 +53,6 @@ const Dropzone = (props) => {
     }
 
     const uploadPicture = event => {
-        console.log(files[0]);
         props.startImageUpload();
         if (files.length === 0) {
             setHasFile(false);
