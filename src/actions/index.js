@@ -25,7 +25,6 @@ const editBasic = (data, history) => async dispatch => {
         });
         dispatch({ type: 'IS_ONLINE' })
     } catch (e) {
-        console.log("Transaction failed: ", e);
         dispatch({ type: 'IS_OFFLINE' })
     } finally {
         dispatch({ 
