@@ -5,8 +5,13 @@ import { connect } from 'react-redux';
 
 import Dropzone from './components/Dropzone';
 import Modal from '../modal/Modal';
-import { editBasic, editProfilePic, offlineEditBasic } from '../../actions';
 import { basicValidation } from '../schemas/FormSchemas';
+import { 
+    editBasic, 
+    editProfilePic, 
+    offlineEditBasic,
+    startImageUpload
+} from '../../actions';
 
 import './basicForm.css';
 
@@ -67,6 +72,8 @@ class BasicForm extends Component {
                                     pendingSwitch={pendingSwitch}
                                     uploadPrompt={this.state.uploadPrompt}
                                     promptSwitchOff={promptSwitchOff}
+                                    imageUploadDone={this.props.imageUploadDone}
+                                    startImageUpload={this.props.startImageUpload}
                                 />
                                 :
                                 <div className="offline-display disable-img-upload">
@@ -135,8 +142,9 @@ class BasicForm extends Component {
 const mapStateToProps = state => {
     return { 
         profile: state.profile,
-        network: state.network
+        network: state.network,
+        imageUploadDone: state.imageUploadDone
     };
 }
 
-export default connect(mapStateToProps, { editBasic, editProfilePic, offlineEditBasic })(BasicForm);
+export default connect(mapStateToProps, { editBasic, editProfilePic, offlineEditBasic, startImageUpload })(BasicForm);

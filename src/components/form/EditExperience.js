@@ -4,8 +4,13 @@ import { connect } from 'react-redux';
 
 import Modal from '../modal/Modal';
 import ExperienceForm from './components/ExperienceForm';
-import { addWorkExp, addWorkExpPic, offlineAddWorkExp } from '../../actions';
 import { timeSort } from './components/DateTime';
+import { 
+    addWorkExp, 
+    addWorkExpPic, 
+    offlineAddWorkExp, 
+    startImageUpload 
+} from '../../actions';
 
 class EditExperience extends Component {
     state = {
@@ -91,8 +96,9 @@ const mapStateToProps = state => {
     return { 
         logo: state.logo,
         profile: state.profile,
-        network: state.network
+        network: state.network,
+        imageUploadDone: state.imageUploadDone
      };
 }
 
-export default connect(mapStateToProps, { addWorkExp, addWorkExpPic, offlineAddWorkExp })(EditExperience);
+export default connect(mapStateToProps, { addWorkExp, addWorkExpPic, offlineAddWorkExp, startImageUpload })(EditExperience);

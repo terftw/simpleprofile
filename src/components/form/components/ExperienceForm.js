@@ -7,8 +7,9 @@ import 'rodal/lib/rodal.css';
 import Options from './Options';
 import { monthOptions, yearOptions } from './DateTime';
 import { expValidation } from '../../schemas/FormSchemas';
-import { DEFAULT_PIC } from '../../../constants/ProfileConstants';
 import Dropzone from '../components/Dropzone';
+import placeholder from '../../../images/placeholder.png';
+
 
 import './experienceForm.css';
 
@@ -29,7 +30,7 @@ class ExperienceForm extends Component {
     }
 
     showImage = () => {
-        let imageLink = this.props.isEdit ? this.props.currWorkExperience && this.props.currWorkExperience.companyLogo : DEFAULT_PIC;
+        let imageLink = this.props.isEdit ? this.props.currWorkExperience && this.props.currWorkExperience.companyLogo : placeholder;
         return this.props.logo === "" ? imageLink : this.props.logo;
     }
 
@@ -58,6 +59,8 @@ class ExperienceForm extends Component {
                                     pendingSwitch={this.props.pendingSwitch}
                                     uploadPrompt={this.props.uploadPrompt}
                                     promptSwitchOff={this.props.promptSwitchOff}
+                                    imageUploadDone={this.props.imageUploadDone}
+                                    startImageUpload={this.props.startImageUpload}
                                 />
                                 :
                                 <div className="offline-display disable-img-upload">

@@ -4,9 +4,13 @@ import { connect } from 'react-redux';
 
 import Modal from '../modal/Modal';
 import ExperienceForm from './components/ExperienceForm';
-import { addWorkExp, addWorkExpPic, offlineAddWorkExp } from '../../actions';
-import { DEFAULT_PIC } from '../../constants/ProfileConstants';
 import { timeSort } from './components/DateTime';
+import { 
+    addWorkExp, 
+    addWorkExpPic, 
+    offlineAddWorkExp, 
+    startImageUpload 
+} from '../../actions';
 
 class AddExperience extends Component {
     state = {
@@ -25,8 +29,6 @@ class AddExperience extends Component {
                 let finalVals = values;
                 if (this.props.logo !== "") {
                     finalVals = { ...values, companyLogo: this.props.logo};
-                } else {
-                    finalVals = { ...values, companyLogo: DEFAULT_PIC };
                 }
                 
                 tempArr.push(finalVals)
@@ -74,8 +76,9 @@ const mapStateToProps = state => {
     return { 
         logo: state.logo,
         profile: state.profile,
-        network: state.network
+        network: state.network,
+        imageUploadDone: state.imageUploadDone
      };
 }
 
-export default connect(mapStateToProps, { addWorkExp, addWorkExpPic, offlineAddWorkExp })(AddExperience);
+export default connect(mapStateToProps, { addWorkExp, addWorkExpPic, offlineAddWorkExp, startImageUpload })(AddExperience);

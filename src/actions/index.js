@@ -36,7 +36,9 @@ const editBasic = (data, history) => async dispatch => {
     }
 }
 const editProfilePic = (data, link) => dispatch => {
-    const storageRef = ref(storage, `images/${link}`);
+    console.log(data)
+    console.log(link)
+    const storageRef = ref(storage, `images/profilepic.jpg`);
     const uploadTask = uploadBytesResumable(storageRef, data);
 
     uploadTask.on('state_changed',
@@ -50,11 +52,14 @@ const editProfilePic = (data, link) => dispatch => {
                 default:
                     console.log("WORK IN PROGRESS");
             }
+
+            dispatch({ type: 'FINISH_UPLOAD' });
         },
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                 dispatch({ type: 'EDIT_PROFILE_PIC', payload: { profileImage: downloadURL } });
-                dispatch({ type: 'IS_ONLINE' })
+                dispatch({ type: 'IS_ONLINE' });
+                dispatch({ type: 'FINISH_UPLOAD' });
             });
         }
     );
@@ -75,11 +80,14 @@ const addWorkExpPic = (data) => dispatch => {
                     console.log("WORK IN PROGRESS");
                     break;
             }
+
+            dispatch({ type: 'FINISH_UPLOAD' });
         },
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                 dispatch({ type: 'EDIT_LOGO', payload: downloadURL });
                 dispatch({ type: 'IS_ONLINE' })
+                dispatch({ type: 'FINISH_UPLOAD' });
             });
         }
     );
@@ -136,6 +144,14 @@ const tryingResubmit = () => {
         type: 'TRY_RESUBMIT'
     }
 }
+
+const startImageUpload = () => {
+    console.log('started');
+    return { 
+        type: 'START_UPLOAD'
+    }
+}
+
 export {
     fetchProfile,
     editBasic,
@@ -145,5 +161,6 @@ export {
     offlineEditBasic,
     offlineAddWorkExp,
     retrySubmit,
-    tryingResubmit
+    tryingResubmit,
+    startImageUpload
 }

@@ -6,7 +6,6 @@ import LoadingSpinner from '../spinner/LoadingSpinner';
 import { INITIAL, RECONNECTION_SUCCESS, RECONNECTION_FAIL } from '../../constants/ProfileConstants';
 import { fetchProfile, retrySubmit, tryingResubmit } from '../../actions';
 import './profile.css';
-import placeholder from '../../images/placeholder.png';
 
 class Profile extends Component {
     state = {
@@ -90,7 +89,9 @@ class Profile extends Component {
                         <div className="job-item">
                             <div className="company-logo">
                                 <div className="company-logo-container">
-                                    <img className="logo" src={this.props.network ? item.companyLogo : placeholder} alt="company logo"/>
+                                    {/* <img className="logo" src={this.props.network ? item.companyLogo : placeholder} alt="company logo"/> */}
+                                    <img className="logo" src={item.companyLogo.preview ? item.companyLogo.preview  :  item.companyLogo} alt="company logo"/>
+
                                 </div>
                             </div>
                             <div>
